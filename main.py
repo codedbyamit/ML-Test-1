@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify, render_template
-
+import os
 import pickle as pkl
 
 app = Flask(__name__)
@@ -28,5 +28,6 @@ def predict_web():
     return jsonify({"prediction": int(prediction)})
 
 if __name__ == "__main__":
-    app.run()
+    port = int(os.environ.get("PORT", 8080))  # default to 8080 locally
+    app.run(host="0.0.0.0", port=port)
 
