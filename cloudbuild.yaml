@@ -16,6 +16,3 @@ steps:
 
 options:
   defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET
-
-images:
-  - 'gcr.io/$PROJECT_ID/ml-test-1'
