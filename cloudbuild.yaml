@@ -1,5 +1,5 @@
 steps:
-  - name: 'gcr.io/paketo-buildpacks/pack'
+  - name: 'docker.io/buildpacksio/pack'
     entrypoint: 'pack'
     args: ['build', 'gcr.io/$PROJECT_ID/ml-test-1', '--builder', 'gcr.io/buildpacks/builder:v1']
     env:
