@@ -1,7 +1,7 @@
 steps:
   - name: 'docker.io/buildpacksio/pack'
     entrypoint: 'pack'
-    args: ['build', 'gcr.io/$PROJECT_ID/ml-test-1', '--builder', 'gcr.io/buildpacks/builder:v1']
+    args: ['build', 'gcr.io/$PROJECT_ID/ml-test-1', '--builder', 'gcr.io/buildpacks/builder:v1', '--publish']
     env:
       - 'GOOGLE_ENTRYPOINT=gunicorn main:app'
 
