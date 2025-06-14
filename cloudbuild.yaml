@@ -1,18 +1,28 @@
 steps:
-  - name: 'docker.io/buildpacksio/pack'
-    entrypoint: 'pack'
-    args: ['build', 'gcr.io/$PROJECT_ID/ml-test-1', '--builder', 'gcr.io/buildpacks/builder:v1', '--publish']
-    env:
-      - 'GOOGLE_ENTRYPOINT=gunicorn main:app'
+  - name: python:3.11-slim
+    id: install-deps
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        apt-get update && apt-get install -y build-essential python3-dev
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        # You can add tests or build commands here if needed
 
-  - name: 'gcr.io/cloud-builders/gcloud'
-    args: [
-      'run', 'deploy', 'ml-test-1',
-      '--image', 'gcr.io/$PROJECT_ID/ml-test-1',
-      '--region', 'us-west1',
-      '--platform', 'managed',
-      '--allow-unauthenticated'
-    ]
+  - name: gcr.io/cloud-builders/gcloud
+    id: deploy
+    args:
+      [
+        'run', 'deploy', 'ml-test-1',
+        '--source', '.',
+        '--region', 'us-west1',
+        '--platform', 'managed',
+        '--allow-unauthenticated',
+        '--project', '${PROJECT_ID}',
+        '--set-env-vars', 'PORT=8080',
+        '--quiet'
+      ]
 
 options:
   defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET
